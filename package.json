@@ -16,6 +16,7 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-requirejs": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
     "less": "^2.6.1",
     "node-fs-extra": "^0.8.1"
   }

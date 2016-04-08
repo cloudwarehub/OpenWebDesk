@@ -1,4 +1,5 @@
-define(function(){
-	console.log('owd')
+define(['owd/desktop', 'app/about/main'], function(desktop, about){
+	desktop.init();
+	about.run();
 });
 require(['owd']);

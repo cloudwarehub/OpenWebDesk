@@ -24,7 +24,8 @@
 						baseUrl: "src/js",
 						mainConfigFile: "src/js/config.js",
 						name: 'owd',
-						out: "tmp/owd.min.js"
+						out: "tmp/owd.min.js",
+						stubModules : ['text', 'hbars']
 					}
 				}
 			},
@@ -36,7 +37,14 @@
 					src: ['bower_components/requirejs/require.js', 'tmp/owd.min.js'],
 					dest: 'tmp/all.js',
 				},
-			}
+			},
+			watch : {
+	            files : ['src/**'],
+	            tasks : ['default'],
+	            options: {
+	                livereload: true
+	            }
+	        },
 		});
 
 		grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -44,6 +52,7 @@
 		grunt.loadNpmTasks('grunt-contrib-copy');
 		grunt.loadNpmTasks('grunt-contrib-requirejs');
 		grunt.loadNpmTasks('grunt-contrib-concat');
+		grunt.loadNpmTasks('grunt-contrib-watch');
 
 		grunt.registerTask('theme', 'build themes', function() {
 			_build.buildThemes();
