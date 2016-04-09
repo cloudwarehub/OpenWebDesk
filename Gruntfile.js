@@ -16,6 +16,23 @@
 				index: {
 					src: 'src/index.html',
 					dest: 'build/index.html'
+				},
+				res: {
+					files: [{
+						expand: true,
+						cwd: 'src/res',
+					    src: '**',
+						dest: 'build/res/',
+						filter: 'isFile'
+					}]
+				},
+				apps: {
+					files: [{
+						expand: true,
+						cwd: 'src/apps',
+					    src: '**',
+						dest: 'build/apps/'
+					}]
 				}
 			},
 			requirejs: {
@@ -25,7 +42,7 @@
 						mainConfigFile: "src/js/config.js",
 						name: 'owd',
 						out: "tmp/owd.min.js",
-						stubModules : ['text', 'hbars']
+						stubModules: ['text', 'hbars']
 					}
 				}
 			},
@@ -38,13 +55,13 @@
 					dest: 'tmp/all.js',
 				},
 			},
-			watch : {
-	            files : ['src/**'],
-	            tasks : ['default'],
-	            options: {
-	                livereload: true
-	            }
-	        },
+			watch: {
+				files: ['src/**'],
+				tasks: ['default'],
+				options: {
+					livereload: true
+				}
+			},
 		});
 
 		grunt.loadNpmTasks('grunt-contrib-uglify');

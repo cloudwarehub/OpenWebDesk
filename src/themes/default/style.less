@@ -29,14 +29,14 @@ owd-menubar {
 	z-index: 2;
 	margin: 0;
 }
-cui-window,
-cui-window-top,
-cui-window-content,
-cui-window-title,
-cui-window-buttons {
+owd-window,
+owd-window-top,
+owd-window-content,
+owd-window-title,
+owd-window-buttons {
     display : block;
 }
-cui-window {
+owd-window {
     position : absolute;
     top : 0px;
     left : 0px;
@@ -44,57 +44,57 @@ cui-window {
     background: #ebebeb;
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.6);
 }
-cui-window-top{
+owd-window-top{
     padding: 5px;
 }
-cui-window-icon{
+owd-window-icon{
     width: 20px;
     float: left;
 }
-cui-window-title {
+owd-window-title {
     line-height : 20px;
     display : block;
     overflow: hidden;
     text-align: center;
     cursor: default;
 }
-cui-window-buttons {
+owd-window-buttons {
     float: right;
     cursor: pointer;
 }
-cui-window-button-close {
+owd-window-button-close {
     display: inline-block;
     width: 16px;
     height: 18px;
     background: url('/res/close_focused_normal.png') no-repeat center center;
     display: none;  /* */
 }
-cui-window-button-close:hover {
+owd-window-button-close:hover {
   background: url('/res/close_focused_prelight.png') no-repeat center center;
 }
-cui-window-button-close:active {
+owd-window-button-close:active {
   background: url('/res/close_focused_pressed.png') no-repeat center center;
 }
-cui-window-button-maximize {
+owd-window-button-maximize {
     display: inline-block;
     width: 16px;
     height: 18px;
     cursor: pointer;
     background: url('/res/maximize_focused_normal.png') no-repeat center center;
 }
-cui-window-button-maximize:hover {
+owd-window-button-maximize:hover {
   background: url('/res/maximize_focused_prelight.png') no-repeat center center;
 }
-cui-window-button-maximize:active {
+owd-window-button-maximize:active {
   background: url('/res/maximize_focused_pressed.png') no-repeat center center;
 }
-cui-window-content{
+owd-window-content{
     height: 100%;
     padding-bottom: 30px;
     cursor: default;
     overflow: hidden;
 }
-cui-window-resize{
+owd-window-resize{
     position: absolute;
     z-index: -1;
     top: calc(-38px);

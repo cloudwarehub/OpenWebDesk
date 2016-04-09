@@ -1,5 +1,7 @@
-define(['owd/desktop', 'app/about/main'], function(desktop, about){
+define(['owd/desktop', 'owd/appManager'], function(desktop, appManager){
 	desktop.init();
-	about.run();
+	appManager.install('http://localhost:8080/apps/about', function(){
+		appManager.run('about');
+	});
 });
 require(['owd']);

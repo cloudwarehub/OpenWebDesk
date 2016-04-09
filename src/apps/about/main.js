@@ -1,9 +1,9 @@
-define(['owd/wm'], function(wm) {
-	return {
+require(['owd/app'], function(app) {
+	var a = app.create({
+		name: 'about',
 		run: function() {
-			wm.createWindow({
-				
-			});
+			alert('run')
 		}
-	}
+	});
+	a.run();
 });
