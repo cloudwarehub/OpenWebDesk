@@ -11,7 +11,7 @@ define(function() {
 				config: appconfig
 			});
 		},
-		findApp: function(name) {console.log(this.apps)
+		findApp: function(name) {
 			var result = null;
 			for (var i in this.apps) {
 				if (this.apps[i].config.name == name) {

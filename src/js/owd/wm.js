@@ -1,7 +1,7 @@
-define(['owd/window'], function(Window) {
+define(['owd/window'], function(_window) {
 	return {
     	createWindow: function(opts) {
-    		var window = new Window(opts);
+    		var window = _window.create(opts);
     		window.show();
     	},
     };

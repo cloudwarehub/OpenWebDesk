@@ -17,6 +17,7 @@
   "dependencies": {
     "requirejs": "^2.2.0",
     "jquery": "^2.2.3",
-    "text": "requirejs-text#^2.0.14"
+    "text": "requirejs-text#^2.0.14",
+    "interact": "^1.2.6"
   }
 }

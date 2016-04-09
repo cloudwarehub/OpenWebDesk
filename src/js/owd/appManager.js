@@ -1,4 +1,4 @@
-define(['owd/registry', 'jquery', 'owd/app'], function(_registry, $) {
+define(['owd/registry', 'jquery'], function(_registry, $) {
 	'use strict';
 
 	/**
@@ -14,7 +14,6 @@ define(['owd/registry', 'jquery', 'owd/app'], function(_registry, $) {
 		 * @param name
 		 */
 		run: function(name) {
-			alert('run' + name);
 			var app = _registry.findApp(name);
 			$.getScript(app.url+'/main.js');
 		},
