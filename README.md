@@ -8,7 +8,9 @@ OpenWebDesk is a part of the
 ### Building OpenWebDesk
 
 `npm install`
+
 `bower install`
+
 `grunt`
 
 
