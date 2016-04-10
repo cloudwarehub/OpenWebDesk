@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "http-server build -a 0.0.0.0 -p 8000 --cors -o"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
     "grunt-contrib-requirejs": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
+    "http-server": "^0.9.0",
     "less": "^2.6.1",
     "node-fs-extra": "^0.8.1"
   }
