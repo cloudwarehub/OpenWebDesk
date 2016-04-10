@@ -1,6 +1,6 @@
-define(['owd/desktop', 'owd/appManager', 'owd/wm'], function(desktop, appManager){
+define(['owd/desktop', 'owd/appManager'], function(desktop, appManager){
 	desktop.init();
-	appManager.install('http://localhost:8080/apps/about', function(){
+	appManager.install('http://localhost:8081/about', function(){
 		appManager.run('about');
 	});
 });

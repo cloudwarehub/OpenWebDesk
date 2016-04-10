@@ -26,13 +26,13 @@
 						filter: 'isFile'
 					}]
 				},
-				apps: {
-					files: [{
-						expand: true,
-						cwd: 'src/apps',
-					    src: '**',
-						dest: 'build/apps/'
-					}]
+				worker: {
+					src: 'src/js/worker.js',
+					dest: 'build/worker.js'
+				},
+				owdjs: {
+					src: 'src/js/owdapp.js',
+					dest: 'build/owdapp.js'
 				}
 			},
 			requirejs: {
