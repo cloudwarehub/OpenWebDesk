@@ -15,7 +15,7 @@ OpenWebDesk is a part of the
 
 
 
-### Running CIP Server
+### Running OpenWebDesk
 
 `npm start`
 
