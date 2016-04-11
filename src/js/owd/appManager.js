@@ -9,7 +9,23 @@ define(['owd/registry', 'jquery', 'owd/container', 'owd/wm'], function(_registry
 		case 'createWindow':
 			_wm.createWindow(e.data[1]);
 			break;
-
+		case 'showWindow':
+			_wm.showWindow(e.data[1]);
+			break;
+		case 'createShowWindow':
+			var win = _wm.createWindow(e.data[1]);
+			_wm.showWindow({wid: win.getWid()});
+			break;
+		case 'hideWindow':
+			_wm.hideWindow(e.data[1]);
+			break;
+		case 'destroyWindow':
+			_wm.destroyWindow(e.data[1]);
+			break;
+		case 'windowFrame':
+			var win = _wm.getWindow(e.data[1].wid);
+			win.getPlayer().decode(new Uint8Array(e.data[1].nal));
+			break;
 		default:
 			break;
 		}

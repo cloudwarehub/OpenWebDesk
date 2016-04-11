@@ -1,4 +1,4 @@
-define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact'], function(html, ui, $, Interact) {
+define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player'], function(html, ui, $, Interact, Player) {
 
 	/**
 	 * replace {{var}} with object value
@@ -27,6 +27,12 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact'], function(html, 
 		for (var i in opts) {
 			this[i] = opts[i];
 		}
+		this.player = new Player({
+            size: {
+                width: 1024,
+                height: 768
+            }
+        });
 	};
 	Window.prototype = {
 		getWid: function() {
@@ -68,14 +74,50 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact'], function(html, 
 			this.bare = value;
 			return this;
 		},
+		maximize: function(){
+            $("#window_"+this.wid).css('left', 0).css('top', 0).width($(document).width()).height($(document).height());
+            // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.width = $(document).width();
+            // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.height = $(document).height();
+            
+            //drag to (0, 30)
+            var buf = new ArrayBuffer(12);
+            var dv = new DataView(buf);
+            dv.setUint8(0, 10, true);
+            dv.setUint32(4, this.wid, true);
+            dv.setInt16(8, 0, true);
+            dv.setInt16(10, 30, true);
+            //window.ws.send(buf);
+            
+            //change size
+            var buf = new ArrayBuffer(12);
+            var dv = new DataView(buf);
+            dv.setUint8(0, 11, true);
+            dv.setUint32(4, this.wid, true);
+            dv.setUint16(8, $(document).width(), true);
+            dv.setUint16(10, $(document).height(), true);
+            //window.ws.send(buf);
+        },
+        hide: function(){
+            $("#window_"+this.wid).hide();
+        },
+        destroy: function(){
+        	$("#window_"+this.wid).remove();
+            //window.ws.send(JSON.stringify({cmd:'destroy', data: {wid: this.wid}}));
+        },
 		show: function() {
 			var self = this;
-			$('body').append(render(html, this));
+			$('owd-desktop').append(render(html, this));
 			if (this.contentTpl) {
 				$.get(this.contentTpl, function(tpl) {
 					$("#window_" + self.wid + ' owd-window-content').html(render(stripScripts(tpl), self))
 				});
 			}
+			if (this.type == 'cloudware') {
+				$("#window_"+this.wid+' owd-window-content').html(this.player.canvas);
+			}
+			$('#window_'+this.wid+' owd-window-button-maximize').click(function(){
+                self.maximize();
+            });
 			Interact('#window_' + this.wid + ' owd-window-title').draggable({
 				onmove: dragMoveListener,
 				onend: function(event) {
