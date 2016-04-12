@@ -33,7 +33,11 @@
 		var themes = getDirectories(THEME_ROOT);
 		themes.forEach(function(theme){
 			var less_content = _fs.readFileSync(_path.join(THEME_ROOT, theme, 'style.less')).toString();
-			_less.render(less_content, {compress: true}, function(e, output) {
+			_less.render(less_content, {compress: true, syncImport: true, paths: _path.join(THEME_ROOT, theme)}, function(e, output) {
+				if (e) {
+					console.log(e);
+					return;
+				}
 				writeFile('build/themes/default/style.css', output.css);
 			});
 		})

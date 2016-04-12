@@ -1,4 +1,4 @@
-define(['owd/registry', 'jquery', 'owd/container', 'owd/wm'], function(_registry, $, _container, _wm) {
+define(['owd/registry', 'jquery', 'owd/container', 'owd/wm', 'owd/helper'], function(_registry, $, _container, _wm, _helper) {
 	'use strict';
 	
 	/**
@@ -64,11 +64,16 @@ define(['owd/registry', 'jquery', 'owd/container', 'owd/wm'], function(_registry
 		 * @param name
 		 */
 		install: function(url, cb) {
+			var self = this;
 			$.getJSON(url + "/owdapp.json").fail(function() {
 				alert('no such app: ' + url);
 			}).done(function(appconfig) {
-				_registry.register(url, appconfig);
-				cb();
+				var uuid = _helper.uuid();
+				_registry.register(uuid, url, appconfig);
+				$("owd-desktop").append("<owd-icon><img src="+url+"/"+appconfig.icons["64x64"]+"/>"+appconfig.name+"</owd-icon>").dblclick(function() {
+					self.run(uuid);
+				});
+				cb(uuid);
 			});
 		}
 	}

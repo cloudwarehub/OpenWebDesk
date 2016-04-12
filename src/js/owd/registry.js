@@ -5,21 +5,14 @@ define(function() {
 	}
 
 	Registry.prototype = {
-		register: function(url, appconfig) {
-			this.apps.push({
+		register: function(name, url, appconfig) {
+			this.apps[name] = {
 				url: url,
 				config: appconfig
-			});
+			};
 		},
 		findApp: function(name) {
-			var result = null;
-			for (var i in this.apps) {
-				if (this.apps[i].config.name == name) {
-					result = this.apps[i];
-					break;
-				}
-			}
-			return result;
+			return this.apps[name];
 		}
 	}
 

@@ -1,0 +1,76 @@
+@base_background_color  : #ebebeb;
+@base_foreground_color  : #242424;
+@base_shadow_unfocused  : 0px 0px 10px 1px rgba(0, 0, 0, .3);
+@base_shadow_focused    : 0px 0px 10px 1px rgba(0, 0, 0, .6);
+
+@menu_background_color : @base_background_color;
+@menu_foreground_color : @base_foreground_color;
+@menu_shadow           : @base_shadow_focused;
+
+@window_top_height    : 30px;
+@window_resize_offset : 8px;
+@window_border_size   : 3px;
+
+@scrollbar_button_background : @owd_border_color;
+@scrollbar_button_foreground : @owd_background_color;
+@scrollbar_track_background  : @base_background_color;
+
+@owd_base_padding : 4px;
+
+@owd_selected_background_color       : rgb(45, 115, 210);
+@owd_selected_blur_background_color  : rgba(45, 115, 210, .2);
+@owd_selected_foreground_color       : #ffffff;
+
+@owd_zebra_foreground_color          : inherit;
+@owd_zebra_background_color          : #F9F9F9;
+
+@owd_border_color                    : #b2b2b2;
+@owd_background_color                : #d9d9d9;
+
+@owd_input_border_color              : #c1c1c1;
+@owd_input_background_color          : #ffffff;
+@owd_input_foreground_color          : @base_foreground_color;
+
+@owd_input_disabled_border_color     : #cccccc;
+@owd_input_disabled_background_color : #dddddd;
+@owd_input_disabled_foreground_color : #C7C7C7;
+
+@owd_button_border_color             : @owd_input_border_color;
+@owd_button_background_color         : #f8f8f8;
+@owd_button_foreground_color         : @base_foreground_color;
+@owd_button_background               : linear-gradient(to bottom, #f8f8f8 0%, #f4f4f4 100%);
+
+@owd_button_active_border_color      : #242424;
+@owd_button_active_background_color  : @owd_button_background_color;
+@owd_button_active_foreground_color  : @base_foreground_color;
+@owd_button_active_background        : linear-gradient(to bottom, #f8f8f8 0%, #f4f4f4 100%);
+
+@owd_button_disabled_border_color    : @owd_input_disabled_border_color;
+@owd_button_disabled_background_color: @owd_input_disabled_background_color;
+@owd_button_disabled_foreground_color: @base_foreground_color;
+@owd_button_disabled_background      : @owd_input_disabled_background_color;
+
+@owd_progress_bar_background : @owd_selected_background_color url('/themes/styles/default/owd/progressbar.png') repeat-x center;
+
+@owd_focus_outline : 0 none transparent;
+
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Karla, Sans-serif;
+	background-color: #572a79;
+}
+
+body, input, button, textarea, label, select {
+	font-size: 12px;
+	font-family: Sans-serif, Arial;
+}
+*{
+	padding: 0;
+	margin: 0;
+}

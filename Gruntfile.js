@@ -56,10 +56,20 @@
 				},
 			},
 			watch: {
-				files: ['src/**'],
-				tasks: ['default'],
-				options: {
-					livereload: true
+				js: {
+					files: ['src/js/**'],
+					tasks: ['requirejs', 'copy:worker', 'copy:owdjs', 'concat', 'uglify'],
+					options: {
+						livereload: true
+					}
+				},
+				theme: {
+					files: ['src/themes/**'],
+					tasks: ['theme']
+				},
+				index: {
+					files: ['src/index.html'],
+					tasks: ['copy:index']
 				}
 			},
 		});
