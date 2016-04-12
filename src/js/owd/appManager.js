@@ -70,7 +70,8 @@ define(['owd/registry', 'jquery', 'owd/container', 'owd/wm', 'owd/helper'], func
 			}).done(function(appconfig) {
 				var uuid = _helper.uuid();
 				_registry.register(uuid, url, appconfig);
-				$("owd-desktop").append("<owd-icon><img src="+url+"/"+appconfig.icons["64x64"]+"/>"+appconfig.name+"</owd-icon>").dblclick(function() {
+				$("owd-desktop").append("<owd-icon owd-icon-id='"+uuid+"'><img src="+url+"/"+appconfig.icons["64x64"]+"/>"+appconfig.name+"</owd-icon>");
+				$("[owd-icon-id="+uuid+"]").dblclick(function() {
 					self.run(uuid);
 				});
 				cb(uuid);
