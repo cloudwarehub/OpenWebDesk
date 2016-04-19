@@ -1,17 +1,38 @@
-define(['owd/appManager', 'owd/registry'], function(appManager, registry) {
+define(['owd/appManager', 'owd/registry', 'owd/process', 'owd/signal', 'owd/container', 'owd/process'], 
+		function(appManager, registry, _process, _signal, _container, _process) {
 	function App(opts) {
 		for (var i in opts) {
 			this[i] = opts[i];
 		}
-		this.name = "";
-		this.run = function() {
-			console.log(this.name + 'run not defined');
-		};
 	}
 	
 	App.prototype = {
 		run: function() {
-			console.log('run it')
+			var self = this;
+			$.ajax({
+				url: '/owdAppLoader.js',
+				dataType: "text",
+				success: function(script) {
+					var container = _container.run(script)
+					var proc = _process.create({
+						app: self,
+						container: container
+					});
+					container.postMessage({url: self.url});
+					container.onmessage = function(msg) {
+						_signal.handler(msg, proc);
+					}
+				}
+			});
+		},
+		getId: function() {
+			return this.id;
+		},
+		getUrl: function() {
+			return this.url;
+		},
+		getConfig: function() {
+			return this.config
 		}
 	}
 	

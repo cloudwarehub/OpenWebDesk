@@ -1,5 +1,6 @@
-define(['jquery', 'owd/desktop', 'owd/appManager'], function($, desktop, appManager){
+define(['jquery', 'owd/desktop', 'owd/appManager', 'owd/registry'], function($, desktop, appManager, _registry){
 	desktop.init();
+	_registry.init();
 	$("owd-menubar input").keyup(function(e) {
 		var self = this;
 		if (e.keyCode == 13) {

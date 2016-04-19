@@ -2,7 +2,7 @@ owd-menubar {
 	height: 36px;
 	width: 100%;
 	background: #101010;
-	display: block;
+	display: table;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -10,7 +10,8 @@ owd-menubar {
 	overflow: visible;
 	z-index: 2;
 	margin: 0;
-	
+	padding: 0 10px;
+	color: white;
 	menu {
 		display: block;
 		height: 100%;
@@ -22,5 +23,74 @@ owd-menubar {
 			height: 100%;
 			line-height: 100%;	
 		}
+	}
+	container {
+		display: table-row;
+	}
+	windows {
+		line-height: 100%;
+		height: 100%;		
+		display: table-cell;
+		vertical-align: middle;		
+	}
+	search {
+		display: table-cell;
+		vertical-align: middle;
+		width: 50px;
+		cursor: pointer;
+		position: relative;
+		icon {
+			display: block;
+		}
+		box {
+			display: none;
+			background: white;
+			padding: 10px;
+			position: fixed;
+			width: 300px;
+			height: 300px;
+			left: 20px;
+			top: 40px;
+			cursor: auto;
+			input {
+				font-size: 14px;
+			    line-height: 1.2;
+			    padding: 5px 4px;
+				width: 280px;
+			}
+			owdapps {
+				display: table;
+				margin: 20px 0;
+				color: #333;
+				width: 280px;
+				owdapp {
+					display: table-row;
+					border-bottom: 1px solid silver;
+					owdapp-img {
+						display: table-cell;
+						width: 52px;
+						img {
+							height: 48px;
+							width: 48px;
+						}
+					}
+					owdapp-name, owdapp-charge, owdapp-ops {
+						display: table-cell;
+						vertical-align: middle;
+					}
+					
+					owdapp-charge, owdapp-ops {
+						width: 40px;
+						text-align: center;
+					}
+				}
+			}
+		}
+	}
+	time {
+		width: 50px;
+		display: table-cell;		
+		vertical-align: middle;
+		font-family: Monospace, Courier New;
 	}
 }

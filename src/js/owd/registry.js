@@ -1,23 +1,41 @@
 define(function() {
 	'use strict';
-	function Registry() {
-		this.apps = [];
+	
+	var store = {};
+	
+	function register(key, value) {
+		store[key] = value;
 	}
-
-	Registry.prototype = {
-		register: function(name, url, appconfig) {
-			this.apps[name] = {
-				url: url,
-				config: appconfig
-			};
-		},
-		findApp: function(name) {
-			return this.apps[name];
+	
+	function get(key) {
+		return store[key];
+	}
+	
+	function installApp(app) {
+		var apps = get('apps');
+		apps.push(app);
+		register('apps', apps);
+	}
+	
+	function findApp(id) {
+		var apps = get('apps');
+		for(var i in apps) {
+			if (apps[i].getId() == id) {
+				return apps[i]
+			}
 		}
+		return null;
 	}
-
-	if (!window.registry) {
-		window.registry = new Registry();
+	
+	return {
+		/**
+		 * init registered app with empty array
+		 */
+		init: function() {
+			register('apps', []);
+		},
+		register: register,
+		get: get,
+		installApp: installApp
 	}
-	return window.registry;
 });

@@ -1,4 +1,4 @@
-define(function() {
+define(['owd/helper'], function(_helper) {
 	/**
 	 * Create a new custom DOM element
 	 * 
@@ -60,6 +60,13 @@ define(function() {
 		return el;
 	}
 	return {
-		createElement: createElement
+		createElement: createElement,
+
+		addIcon: function(app) {
+			$("owd-desktop").append("<owd-icon owd-icon-id='"+app.getId()+"'><img src="+_helper.join(app.getUrl(), app.getConfig().icons["64x64"])+"/>"+app.getConfig().name+"</owd-icon>");
+			$("[owd-icon-id="+app.getId()+"]").dblclick(function() {
+				app.run();
+			});
+		}
 	}
 })

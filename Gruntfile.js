@@ -31,6 +31,10 @@
 					dest: 'build/worker.js'
 				},
 				owdjs: {
+					src: 'src/js/owdAppLoader.js',
+					dest: 'build/owdAppLoader.js'
+				},
+				owdappjs: {
 					src: 'src/js/owdapp.js',
 					dest: 'build/owdapp.js'
 				}
@@ -58,7 +62,7 @@
 			watch: {
 				js: {
 					files: ['src/js/**'],
-					tasks: ['requirejs', 'copy:worker', 'copy:owdjs', 'concat', 'uglify'],
+					tasks: ['requirejs', 'copy:worker', 'copy:owdjs', 'copy:owdappjs', 'concat', 'uglify'],
 					options: {
 						livereload: true
 					}
