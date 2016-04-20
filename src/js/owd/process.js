@@ -4,11 +4,17 @@ define(function() {
 		for (var i in opts) {
 			this[i] = opts[i];
 		}
-		this.proc_id = proc_id++;
 	}
 	
-	function create(opts) {
+	Process.prototype = {
+		getApp: function() {
+			return this.app || null;
+		}
+	}
+	
+	function create(pid, opts) {
 		var proc = new Process(opts);
+		proc.pid = pid;
 		return proc;
 	}
 	

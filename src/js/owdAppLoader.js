@@ -22,7 +22,6 @@ self.loadScripts = function(s) {
 	importScripts(self.appInfo.url + '/' + s);
 }
 onmessage = function(msg) {
-	console.log(msg.data)
 	self.appInfo = msg.data;
 	onmessage = null;
 	importScripts(self.appInfo.url + '/' + 'main.js');

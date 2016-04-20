@@ -1,5 +1,5 @@
-define(['owd/appManager', 'owd/registry', 'owd/process', 'owd/signal', 'owd/container', 'owd/process'], 
-		function(appManager, registry, _process, _signal, _container, _process) {
+define(['owd/appManager', 'owd/registry', 'owd/process', 'owd/signal', 'owd/container', 'owd/processManager'], 
+		function(appManager, registry, _process, _signal, _container, _processManager) {
 	function App(opts) {
 		for (var i in opts) {
 			this[i] = opts[i];
@@ -14,12 +14,12 @@ define(['owd/appManager', 'owd/registry', 'owd/process', 'owd/signal', 'owd/cont
 				dataType: "text",
 				success: function(script) {
 					var container = _container.run(script)
-					var proc = _process.create({
+					var proc = _processManager.create(null, {
 						app: self,
 						container: container
 					});
-					container.postMessage({url: self.url});
-					container.onmessage = function(msg) {
+					container.worker.postMessage({url: self.url});
+					container.worker.onmessage = function(msg) {
 						_signal.handler(msg, proc);
 					}
 				}

@@ -11,6 +11,24 @@ define(['jquery', 'text!tpl/owdapp_item.html', 'owd/helper', 'owd/appManager'], 
 	}
 	
 	function setupSearchView() {
+		$.ajax({
+			url: 'http://api.cloudwarehub.com/owdapp/search',
+			dataType: 'json',
+			success: function(data) {
+				$('owd-menubar owdapps').html('');
+				for (i in data.data) {
+					var str = _helper.render(_owdapp_item, data.data[i]);
+					$("owd-menubar owdapps").append(str);
+					$('owd-menubar owdapp[owdapp-id="'+data.data[i].id+'"] a').click(function(){
+						_appManager.install($(this).attr('owdapp-url'), function(app){
+							$('owd-menubar search box').hide();
+							app.run();
+						});
+					})
+				}
+			}
+		});
+		
 		$("owd-menubar search icon").click(function() {
 			$("owd-menubar search box").toggle();
 		})
@@ -21,6 +39,8 @@ define(['jquery', 'text!tpl/owdapp_item.html', 'owd/helper', 'owd/appManager'], 
 		});
 		$("owd-menubar search input").on('input', function() {
 			var key = $(this).val();
+			if (key == "") 
+				return;
 			$.ajax({
 				url: 'http://api.cloudwarehub.com/owdapp/search',
 				data: {key: key},

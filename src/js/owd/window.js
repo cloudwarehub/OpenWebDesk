@@ -19,6 +19,9 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 		for (var i in opts) {
 			this[i] = opts[i];
 		}
+		if (!opts.wid) {
+			this.wid = Math.floor((Math.random() * 1000000) + 1); // TODO: check conflict
+		}
 		this.proc = proc;
 		this.player = new Player({
             size: {
@@ -75,7 +78,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 			return this;
 		},
 		maximize: function(){
-            $("#window_"+this.wid).css('left', 0).css('top', 0).width($(document).width()).height($(document).height());
+            $("#window_"+this.wid).css('left', 0).css('top', 0).width($(document).width()).height($(document).height()).css('transform', '');
             // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.width = $(document).width();
             // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.height = $(document).height();
             
@@ -122,7 +125,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 			var self = this;
 			
 			if (!this.bare && this.y < 15) {
-                self.proc.container.postMessage(['windowMove', {wid: this.wid, x: this.x, y: 30}]);
+                self.proc.container.worker.postMessage(['windowMove', {wid: this.wid, x: this.x, y: 30}]);
 			}
 			this.top_show = this.bare?'none':'block';
 			$('owd-desktop').append(_helper.render(html, this));
@@ -143,7 +146,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 			Interact('#window_' + this.wid + ' owd-window-title').draggable({
 				onmove: dragMoveListener,
 				onend: function(event) {
-					self.proc.container.postMessage(['windowMove', {wid: self.wid, x: self.x + event.dx, y: self.y + event.dy}]);
+					self.proc.container.worker.postMessage(['windowMove', {wid: self.wid, x: self.x + event.dx, y: self.y + event.dy}]);
 				}
 			}).styleCursor(false);
 			Interact('#window_' + this.wid).resizable({
@@ -190,7 +193,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
                 dv.setInt16(10, e.offsetY, true);
                 //window.ws.send(buf)
                 //window.ws.send(JSON.stringify({cmd:'mousemove', data: {wid: self.wid, x: e.offsetX, y: e.offsetY}}));
-                self.proc.container.postMessage(['mousemove', {wid: self.wid, x: e.offsetX, y: e.offsetY}]);
+                self.proc.container.worker.postMessage(['mousemove', {wid: self.wid, x: e.offsetX, y: e.offsetY}]);
             });
             $('#window_'+this.wid+' canvas').mousedown(function(e){
                 var buf = new ArrayBuffer(12);
@@ -200,7 +203,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
                 dv.setUint32(8, self.wid, true);
                 dv.setInt16(8, e.which, true);
                 //window.ws.send(buf)
-                self.proc.container.postMessage(['mousedown', {wid: self.wid, code: e.which}]);
+                self.proc.container.worker.postMessage(['mousedown', {wid: self.wid, code: e.which}]);
             	return false;
             });
             $('#window_'+this.wid+' canvas').mouseup(function(e){
@@ -211,14 +214,14 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
                 dv.setUint32(8, self.wid, true);
                 dv.setInt16(8, e.which, true);
                 //window.ws.send(buf)
-                self.proc.container.postMessage(['mouseup', {wid: self.wid, code: e.which}]);
+                self.proc.container.worker.postMessage(['mouseup', {wid: self.wid, code: e.which}]);
             	return false;
             });
 		}
 	}
 
-	function create(opts, app) {
-		var w = new Window(opts, app);
+	function create(opts, proc) {
+		var w = new Window(opts, proc);
 		return w;
 	}
 	return {

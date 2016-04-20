@@ -17,8 +17,11 @@ define(['owd/window'], function(_window) {
 
 	return {
 		getWindow: getWindow,
-		createWindow: function(opts, app) {
-			var window = _window.create(opts, app);
+		getWindows: function() {
+			return windows;
+		},
+		createWindow: function(opts, proc) {
+			var window = _window.create(opts, proc);
 			windows.push(window);
 			return window;
 		},

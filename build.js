@@ -40,6 +40,9 @@
 				}
 				writeFile('build/themes/default/style.css', output.css);
 			});
+			
+			/* copy fonts */
+			_fs.copySync(_path.join(THEME_ROOT, theme, 'font'), _path.join('build/themes/', theme, '/font'));
 		})
 	}
 	module.exports = {
