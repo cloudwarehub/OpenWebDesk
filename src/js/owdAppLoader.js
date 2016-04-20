@@ -1,11 +1,5 @@
-function Owdapp(opts) {
-	var apps = [];
-	for (i in opts) {
-		this[i] = opts[i];
-	}
-	postMessage(['createApp', this]);
-}
-Owdapp.prototype = {
+self.Owdapp = {
+	appInfo: {},
 	createWindow: function(opts) {
 		postMessage(['createWindow', opts]);
 	},
@@ -16,13 +10,15 @@ Owdapp.prototype = {
 		postMessage(['destroyWindow', opts]);
 	}
 }
-self.Owdapp = Owdapp;
-self.appInfo = null;
-self.loadScripts = function(s) {
-	importScripts(self.appInfo.url + '/' + s);
+
+self.loadScripts = function() {
+	for (i in arguments) {
+		importScripts(self.Owdapp.appInfo.url + '/' + arguments[i]);
+	}
 }
+
 onmessage = function(msg) {
-	self.appInfo = msg.data;
+	self.Owdapp.appInfo = msg.data;
 	onmessage = null;
-	importScripts(self.appInfo.url + '/' + 'main.js');
+	loadScripts(main.js);
 }
