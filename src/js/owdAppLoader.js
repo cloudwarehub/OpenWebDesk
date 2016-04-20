@@ -20,5 +20,5 @@ self.loadScripts = function() {
 onmessage = function(msg) {
 	self.Owdapp.appInfo = msg.data;
 	onmessage = null;
-	loadScripts(main.js);
+	loadScripts('main.js');
 }
