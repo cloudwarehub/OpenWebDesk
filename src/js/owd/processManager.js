@@ -40,13 +40,17 @@ define(['owd/process', 'owd/helper', 'contextMenu', 'owd/wm'], function(_process
 		}
 		proc.container.stop();
 		
-		/* remove windows */
+		/* remove windows, WARNING: don't splice windows in _wm.destroyWindow, 
+		 * because it will cause bellow for loop index a mess, must filter windows after destroy */
 		var windows = _wm.getWindows();
 		for (i in windows) {
-			if (windows[i].proc.pid == proc.pid) {
+			if (windows[i].proc.pid == proc.pid) {console.log(windows[i].wid)
 				_wm.destroyWindow({wid: windows[i].wid});
 			}
 		}
+		windows.filter(function(win) {
+			return win.proc.pid != proc.pid;
+		});
 		
 		/* remove proc */
 		for (i in processes) {

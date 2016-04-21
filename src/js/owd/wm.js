@@ -3,16 +3,21 @@ define(['owd/window'], function(_window) {
 	function getWindow(wid, cb) {
 		for (i in windows) {
 			if (windows[i].getWid() == wid) {
-				(cb || function(){})(windows[i], i);
+				(cb || function() {
+				})(windows[i], i);
 				return windows[i];
 			}
 		}
 	}
 
 	function destroyWindow(window) {
-		getWindow(window.getWid(), function(win, i) {
-			windows.splice(i, 1);
-		});
+		for (i in windows) {
+			console.log(i);
+			if (windows[i].getWid() == window.getWid()) {
+				windows.splice(i, 1);
+				return;
+			}
+		}
 	}
 
 	return {
@@ -38,10 +43,11 @@ define(['owd/window'], function(_window) {
 			window.hide();
 		},
 		destroyWindow: function(opts) {
-			getWindow(opts.wid, function(window, i) {
-				window.destroy();
-				windows.splice(i, 1);
-			});
+			for (i in windows) {
+				if (windows[i].getWid() == windows[i].getWid()) {
+					windows[i].destroy();
+				}
+			}
 		},
 		configureWindow: function(opts) {
 			var window = getWindow(opts.wid);
