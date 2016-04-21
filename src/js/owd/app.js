@@ -1,5 +1,5 @@
-define(['owd/appManager', 'owd/registry', 'owd/process', 'owd/signal', 'owd/container', 'owd/processManager'], 
-		function(appManager, registry, _process, _signal, _container, _processManager) {
+define(['owd/appManager', 'owd/registry', 'owd/process', 'owd/signal', 'owd/container', 'owd/processManager', 'owd/keyMapper'], 
+		function(appManager, registry, _process, _signal, _container, _processManager, KeyMapper) {
 	function App(opts) {
 		for (var i in opts) {
 			this[i] = opts[i];
@@ -22,6 +22,18 @@ define(['owd/appManager', 'owd/registry', 'owd/process', 'owd/signal', 'owd/cont
 					container.worker.onmessage = function(msg) {
 						_signal.handler(msg, proc);
 					}
+					var km = new KeyMapper(8);
+				    var downkeys = [];
+					$(document).keyup(function(e) {
+						var code = e.which;
+						container.worker.postMessage(['keyup', {wid: 0, code: km.mapKey(code)}]);
+						return false;
+					});
+					$(document).keydown(function(e) {
+						var code = e.which;
+						container.worker.postMessage(['keydown', {wid: 0, code: km.mapKey(code)}]);
+						return false;
+					});
 				}
 			});
 		},
