@@ -44,7 +44,7 @@ define(['owd/window'], function(_window) {
 		},
 		destroyWindow: function(opts) {
 			for (i in windows) {
-				if (windows[i].getWid() == opt.wid) {
+				if (windows[i].getWid() == opts.wid) {
 					windows[i].destroy();
 					break;
 				}
