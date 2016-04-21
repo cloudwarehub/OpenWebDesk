@@ -44,10 +44,12 @@ define(['owd/window'], function(_window) {
 		},
 		destroyWindow: function(opts) {
 			for (i in windows) {
-				if (windows[i].getWid() == windows[i].getWid()) {
+				if (windows[i].getWid() == opt.wid) {
 					windows[i].destroy();
+					break;
 				}
 			}
+			windows.splice(i, 1);
 		},
 		configureWindow: function(opts) {
 			var window = getWindow(opts.wid);

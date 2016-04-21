@@ -45,7 +45,7 @@ define(['owd/process', 'owd/helper', 'contextMenu', 'owd/wm'], function(_process
 		var windows = _wm.getWindows();
 		for (i in windows) {
 			if (windows[i].proc.pid == proc.pid) {console.log(windows[i].wid)
-				_wm.destroyWindow({wid: windows[i].wid});
+				windows[i].destroy();
 			}
 		}
 		windows.filter(function(win) {
