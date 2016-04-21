@@ -23,6 +23,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 			this.wid = Math.floor((Math.random() * 1000000) + 1); // TODO: check conflict
 		}
 		this.proc = proc;
+		this.pid = proc.pid;
 		this.player = new Player({
             size: {
                 width: 1024,
@@ -38,7 +39,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 			return this.player;
 		},
 		getDom: function() {
-			return $('#window_' + this.wid);
+			return $('#window_' +this.proc.pid + '_'+ this.wid);
 		},
 		set: function(key, value) {
 			this[key] = value;
@@ -78,7 +79,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 			return this;
 		},
 		maximize: function(){
-            $("#window_"+this.wid).css('left', 0).css('top', 0).width($(document).width()).height($(document).height()).css('transform', '');
+            this.getDom().css('left', 0).css('top', 0).width($(document).width()).height($(document).height()).css('transform', '');
             // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.width = $(document).width();
             // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.height = $(document).height();
             
@@ -101,10 +102,10 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
             //window.ws.send(buf);
         },
         hide: function(){
-            $("#window_"+this.wid).hide();
+            this.getDom().hide();
         },
         destroy: function(){
-        	$("#window_"+this.wid).remove();
+        	this.getDom().remove();
         	//_wm.destroyWindow(this);
         	(this.onDestroy || function(){})(this);
         },
@@ -118,8 +119,8 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
             //$("#window_"+opts.wid+' owd-window-content').append('<canvas width="'+opts.width+'px" height="'+opts.height+'px"></canvas>');
         },
 		show: function() {
-			if($('#window_'+this.wid).length != 0) {
-                $('#window_'+this.wid).show();
+			if(this.getDom().length != 0) {
+				this.getDom().show();
                 return;
             }
 			var self = this;
@@ -131,25 +132,25 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 			$('owd-desktop').append(_helper.render(html, this));
 			if (this.contentTpl) {
 				$.get(_helper.join(this.proc.app.getUrl(), this.contentTpl), function(tpl) {
-					$("#window_" + self.wid + ' owd-window-content').html(_helper.render(stripScripts(tpl), self))
+					self.getDom().find('owd-window-content').html(_helper.render(stripScripts(tpl), self))
 				});
 			}
 			if (this.type == 'cloudware') {
-				$("#window_"+this.wid+' owd-window-content').html(this.player.canvas);
+				self.getDom().find('owd-window-content').html(this.player.canvas);
 			}
-			$('#window_'+this.wid+' owd-window-button-maximize').click(function(){
+			self.getDom().find('owd-window-button-maximize').click(function(){
                 self.maximize();
             });
-			$('#window_'+this.wid+' owd-window-button-close').click(function(){
+			self.getDom().find('owd-window-button-close').click(function(){
                 self.hide();
             });
-			Interact('#window_' + this.wid + ' owd-window-title').draggable({
+			Interact('#window_' + this.proc.pid + '_' + this.wid + ' owd-window-title').draggable({
 				onmove: dragMoveListener,
 				onend: function(event) {
 					self.proc.container.worker.postMessage(['windowMove', {wid: self.wid, x: self.x + event.dx, y: self.y + event.dy}]);
 				}
 			}).styleCursor(false);
-			Interact('#window_' + this.wid).resizable({
+			Interact('#window_' + this.proc.pid + '_' + this.wid).resizable({
 				edges: {
 					left: true,
 					right: true,
@@ -184,7 +185,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 				target.setAttribute('data-x', x);
 				target.setAttribute('data-y', y);
 			}
-			$('#window_'+this.wid+' canvas').mousemove(function(e){
+			$('#window_' + this.proc.pid + '_' + this.wid +' canvas').mousemove(function(e){
                 var buf = new ArrayBuffer(12);
                 var dv = new DataView(buf);
                 dv.setUint8(0, 4, true);
@@ -195,7 +196,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
                 //window.ws.send(JSON.stringify({cmd:'mousemove', data: {wid: self.wid, x: e.offsetX, y: e.offsetY}}));
                 self.proc.container.worker.postMessage(['mousemove', {wid: self.wid, x: e.offsetX, y: e.offsetY}]);
             });
-            $('#window_'+this.wid+' canvas').mousedown(function(e){
+            $('#window_' + this.proc.pid + '_' + this.wid +' canvas').mousedown(function(e){
                 var buf = new ArrayBuffer(12);
                 var dv = new DataView(buf);
                 dv.setUint8(0, 5, true);
@@ -206,7 +207,7 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
                 self.proc.container.worker.postMessage(['mousedown', {wid: self.wid, code: e.which}]);
             	return false;
             });
-            $('#window_'+this.wid+' canvas').mouseup(function(e){
+            $('#window_' + this.proc.pid + '_' + this.wid +' canvas').mouseup(function(e){
                 var buf = new ArrayBuffer(12);
                 var dv = new DataView(buf);
                 dv.setUint8(0, 6, true);
