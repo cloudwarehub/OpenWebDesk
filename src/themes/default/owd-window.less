@@ -8,14 +8,17 @@ owd-window-buttons {
 }
 owd-window {
     position : absolute;
+	border-collapse: collapse;	
     top : 0px;
     left : 0px;
     overflow : visible;
-    background: #ebebeb;
+    background: #fff;
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.6);
 }
 owd-window-top{
-    padding: 5px;
+    padding: 5px 10px;
+	display: table-row;
+	background: #efefef;
 }
 owd-window-icon{
     width: 20px;
@@ -63,10 +66,11 @@ owd-window-content{
     overflow: hidden;
 	background: white;
 }
+
 owd-window-resize{
     position: absolute;
     z-index: -1;
-    top: calc(-38px);
+    top: calc(-8px);
     left: -8px;
     right: -8px;
     bottom: -8px;
