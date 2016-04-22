@@ -174,8 +174,6 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 				target.setAttribute('data-resize-y', y);
 			});
 			function dragMoveListener(event) {
-				// window.ws.send(JSON.stringify({cmd:'drag', data: {wid:
-				// self.wid, x: event.dx, y: event.dx}}));
 				var target = event.target.parentNode.parentNode, x = (parseFloat(target.style.left) || 0) + event.dx, y = (parseFloat(target.style.top) || 0) + event.dy;
 
 				target.style.left = x + 'px';
@@ -186,35 +184,13 @@ define(['text!tpl/window.html', 'owd/ui', 'jquery', 'interact', 'Player', 'owd/h
 				target.setAttribute('data-y', y);
 			}
 			$('#window_' + this.proc.pid + '_' + this.wid +' canvas').mousemove(function(e){
-                var buf = new ArrayBuffer(12);
-                var dv = new DataView(buf);
-                dv.setUint8(0, 4, true);
-                dv.setUint32(4, self.wid, true);
-                dv.setInt16(8, e.offsetX, true);
-                dv.setInt16(10, e.offsetY, true);
-                //window.ws.send(buf)
-                //window.ws.send(JSON.stringify({cmd:'mousemove', data: {wid: self.wid, x: e.offsetX, y: e.offsetY}}));
                 self.proc.container.worker.postMessage(['mousemove', {wid: self.wid, x: e.offsetX, y: e.offsetY}]);
             });
             $('#window_' + this.proc.pid + '_' + this.wid +' canvas').mousedown(function(e){
-                var buf = new ArrayBuffer(12);
-                var dv = new DataView(buf);
-                dv.setUint8(0, 5, true);
-                dv.setUint32(4, self.wid, true);
-                dv.setUint32(8, self.wid, true);
-                dv.setInt16(8, e.which, true);
-                //window.ws.send(buf)
                 self.proc.container.worker.postMessage(['mousedown', {wid: self.wid, code: e.which}]);
             	return false;
             });
             $('#window_' + this.proc.pid + '_' + this.wid +' canvas').mouseup(function(e){
-                var buf = new ArrayBuffer(12);
-                var dv = new DataView(buf);
-                dv.setUint8(0, 6, true);
-                dv.setUint32(4, self.wid, true);
-                dv.setUint32(8, self.wid, true);
-                dv.setInt16(8, e.which, true);
-                //window.ws.send(buf)
                 self.proc.container.worker.postMessage(['mouseup', {wid: self.wid, code: e.which}]);
             	return false;
             });
