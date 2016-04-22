@@ -7,8 +7,8 @@ define(['jquery', 'owd/desktop', 'owd/appManager', 'owd/registry'], function($, 
 //	appManager.install('http://localhost:8081/about', function(){
 //		appManager.run('about');
 //	});
-	appManager.install('http://localhost:8081/gedit', function(app){
-		app.run();
-	});
+//	appManager.install('http://localhost:8081/gedit', function(app){
+//		app.run();
+//	});
 });
 require(['owd']);
