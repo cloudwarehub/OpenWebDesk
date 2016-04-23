@@ -54,6 +54,12 @@ define(['owd/window'], function(_window) {
 		configureWindow: function(opts) {
 			var window = getWindow(opts.wid);
 			window.configure(opts);
+		},
+		showLoading: function() {
+			$("owd-loading-mask").show();
+		},
+		hideLoading: function() {
+			$("owd-loading-mask").hide();
 		}
 	};
 })

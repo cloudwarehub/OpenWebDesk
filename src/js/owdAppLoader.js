@@ -8,6 +8,12 @@ self.Owdapp = {
 	},
 	destroyWindow: function(opts) {
 		postMessage(['destroyWindow', opts]);
+	},
+	showLoading: function() {
+		postMessage(['showLoading']);
+	},
+	hideLoading: function() {
+		postMessage(['hideLoading']);
 	}
 }
 

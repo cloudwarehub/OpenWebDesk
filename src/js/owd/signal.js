@@ -29,6 +29,12 @@ define(['owd/wm'], function(_wm) {
 				if(win)
 					win.getPlayer().decode(new Uint8Array(e.data[1].nal));
 				break;
+			case 'showLoading':
+				_wm.showLoading();
+				break;
+			case 'hideLoading':
+				_wm.hideLoading();
+				break;
 			default:
 				break;
 			}
