@@ -57,5 +57,5 @@ define(['urljoin'], function(_urljoin) {
 		join: _urljoin,
 		dirname: dirname,
 		render: render
-	}
-})
+	};
+});

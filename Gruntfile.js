@@ -5,6 +5,13 @@
 		// Project configuration.
 		grunt.initConfig({
 			pkg: grunt.file.readJSON('package.json'),
+			jshint: {
+				options: {
+					jshintrc: true
+				},
+				all: ['Gruntfile.js', 'src/**/*.js'],
+				core: ['src/core/**/*.js'],
+			},
 			uglify: {
 				build: {
 					src: 'tmp/all.js',
@@ -21,17 +28,17 @@
 					files: [{
 						expand: true,
 						cwd: 'src/res',
-					    src: '**',
+						src: '**',
 						dest: 'build/res/',
 						filter: 'isFile'
 					}]
 				},
 				worker: {
-					src: 'src/js/worker.js',
+					src: 'src/worker.js',
 					dest: 'build/worker.js'
 				},
 				owdjs: {
-					src: 'src/js/owdAppLoader.js',
+					src: 'src/owdAppLoader.js',
 					dest: 'build/owdAppLoader.js'
 				},
 				owdappjs: {
@@ -42,11 +49,11 @@
 			requirejs: {
 				compile: {
 					options: {
-						baseUrl: "src/js",
-						mainConfigFile: "src/js/config.js",
-						name: 'owd',
-						out: "tmp/owd.min.js",
-						stubModules: ['text', 'hbars']
+						baseUrl: "src",
+						mainConfigFile: "src/config.js",
+						name: 'core/owd',
+						out: "build/owd.min.js",
+						include: ['../bower_components/requirejs/require.js']
 					}
 				}
 			},
@@ -60,13 +67,6 @@
 				},
 			},
 			watch: {
-				js: {
-					files: ['src/js/**'],
-					tasks: ['requirejs', 'copy:worker', 'copy:owdjs', 'copy:owdappjs', 'concat', 'uglify'],
-					options: {
-						livereload: true
-					}
-				},
 				theme: {
 					files: ['src/themes/**'],
 					tasks: ['theme']
@@ -74,10 +74,15 @@
 				index: {
 					files: ['src/index.html'],
 					tasks: ['copy:index']
+				},
+				core: {
+					files: ['src/core/**'],
+					tasks: ['jshint:core', 'requirejs']
 				}
 			},
 		});
 
+		grunt.loadNpmTasks('grunt-contrib-jshint');
 		grunt.loadNpmTasks('grunt-contrib-uglify');
 		grunt.loadNpmTasks('grunt-contrib-clean');
 		grunt.loadNpmTasks('grunt-contrib-copy');
@@ -90,7 +95,7 @@
 		});
 
 		// Default task(s).
-		grunt.registerTask('default', ['clean', 'requirejs', 'copy', 'theme', 'concat', 'uglify']);
+		grunt.registerTask('default', ['clean', 'requirejs', 'copy', 'theme']);
 
 	};
 })(require('./build.js'));

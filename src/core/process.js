@@ -1,5 +1,4 @@
 define(function() {
-	var proc_id = 1;
 	function Process(opts) {
 		for (var i in opts) {
 			this[i] = opts[i];
@@ -10,7 +9,7 @@ define(function() {
 		getApp: function() {
 			return this.app || null;
 		}
-	}
+	};
 	
 	function create(pid, opts) {
 		var proc = new Process(opts);

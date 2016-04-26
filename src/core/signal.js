@@ -1,6 +1,7 @@
-define(['owd/wm'], function(_wm) {
+define(['core/windowManager'], function(_wm) {
 	return {
 		handler: function(e, proc) {
+			var win;
 			switch (e.data[0]) {
 			case 'createApp':
 				//apps.push(e.data[1]);
@@ -12,7 +13,7 @@ define(['owd/wm'], function(_wm) {
 				_wm.showWindow(e.data[1]);
 				break;
 			case 'createShowWindow':
-				var win = _wm.createWindow(e.data[1], proc);
+				win = _wm.createWindow(e.data[1], proc);
 				_wm.showWindow({wid: win.getWid()});
 				break;
 			case 'hideWindow':
@@ -25,7 +26,7 @@ define(['owd/wm'], function(_wm) {
 				_wm.configureWindow(e.data[1]);
 				break;
 			case 'windowFrame':
-				var win = _wm.getWindow(e.data[1].wid);
+				win = _wm.getWindow(e.data[1].wid);
 				if(win)
 					win.getPlayer().decode(new Uint8Array(e.data[1].nal));
 				break;
@@ -39,5 +40,5 @@ define(['owd/wm'], function(_wm) {
 				break;
 			}
 		}
-	}
-})
+	};
+});

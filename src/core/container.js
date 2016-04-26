@@ -20,5 +20,5 @@ define(function() {
 			var container = new Container(script);
 			return container;
 		}
-	}
-})
+	};
+});

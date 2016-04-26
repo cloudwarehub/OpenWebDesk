@@ -30,7 +30,7 @@ define(function() {
 			for (j = 0; j < XKeysMap[i].length; j++) {
 				key = XKeysMap[i][j];
 				value = i + min;
-				if (key != 0)
+				if (key !== 0)
 					asciiToX[key] = value;
 			}
 		}
@@ -43,14 +43,15 @@ define(function() {
 	}
 
 	KeyMapper.prototype.mapKey = function(keyCode) {
-		if (exceptionKeys[keyCode] != null)
+		if (exceptionKeys[keyCode] !== null)
 			keyCode = exceptionKeys[keyCode];
 
 		key = self.keyMap[keyCode];
-		if (key == undefined || key == null)
+		if (key === undefined || key === null)
 			key = 0;
 		return key;
-	}
+	};
+	
 	var xkm = [[65406, 0, 65406, 0, 0, 0, 0], [65307, 0, 65307, 0, 0, 0, 0], [49, 33, 49, 33, 0, 0, 0], [50, 64, 50, 64, 0, 0, 0], [51, 35, 51, 35, 0, 0, 0], [52, 36, 52, 36, 0, 0, 0],
 			[53, 37, 53, 37, 0, 0, 0], [54, 94, 54, 94, 0, 0, 0], [55, 38, 55, 38, 0, 0, 0], [56, 42, 56, 42, 0, 0, 0], [57, 40, 57, 40, 0, 0, 0], [48, 41, 48, 41, 0, 0, 0],
 			[45, 95, 45, 95, 0, 0, 0], [61, 43, 61, 43, 0, 0, 0], [65288, 65288, 65288, 65288, 0, 0, 0], [65289, 65056, 65289, 65056, 0, 0, 0], [113, 81, 113, 81, 0, 0, 0],
@@ -97,4 +98,4 @@ define(function() {
 			[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]];
 	return KeyMapper;
 	
-})
+});

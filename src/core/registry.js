@@ -21,7 +21,7 @@ define(function() {
 		var apps = get('apps');
 		for(var i in apps) {
 			if (apps[i].getId() == id) {
-				return apps[i]
+				return apps[i];
 			}
 		}
 		return null;
@@ -37,5 +37,5 @@ define(function() {
 		register: register,
 		get: get,
 		installApp: installApp
-	}
+	};
 });

@@ -1,36 +1,39 @@
-define(['owd/window'], function(_window) {
+define(['core/window'], function(_window) {
 	var windows = [];
-	function getWindow(wid, cb) {
-		for (i in windows) {
+	var s_wid = 1;
+	
+	function getWindow(wid) {
+		for (var i in windows) {
 			if (windows[i].getWid() == wid) {
-				(cb || function() {
-				})(windows[i], i);
 				return windows[i];
 			}
 		}
 	}
+	
+	function createWindow(opts) {
+		var window = _window.create(opts, proc);
+		windows.push(window);
+		return window;
+	}
 
 	function destroyWindow(window) {
-		for (i in windows) {
-			console.log(i);
-			if (windows[i].getWid() == window.getWid()) {
-				windows.splice(i, 1);
-				return;
+		for (var i in windows) {
+			if (windows[i].getWid() == window.wid) {
+				windows[i].destroy();
+				break;
 			}
 		}
+		windows.splice(i, 1);
 	}
+	
 
 	return {
 		getWindow: getWindow,
 		getWindows: function() {
 			return windows;
 		},
-		createWindow: function(opts, proc) {
-			var window = _window.create(opts, proc);
-			windows.push(window);
-			return window;
-		},
-		showWindow: function(opts) {
+		createWindow: createWindow,
+		showWindow: function(opts, proc) {
 			var window = getWindow(opts.wid);
 			if (opts.bare) {
 				window.setBare(opts.bare);
@@ -42,15 +45,7 @@ define(['owd/window'], function(_window) {
 			var window = getWindow(opts.wid);
 			window.hide();
 		},
-		destroyWindow: function(opts) {
-			for (i in windows) {
-				if (windows[i].getWid() == opts.wid) {
-					windows[i].destroy();
-					break;
-				}
-			}
-			windows.splice(i, 1);
-		},
+		destroyWindow: destroyWindow,
 		configureWindow: function(opts) {
 			var window = getWindow(opts.wid);
 			window.configure(opts);
@@ -62,4 +57,4 @@ define(['owd/window'], function(_window) {
 			$("owd-loading-mask").hide();
 		}
 	};
-})
+});

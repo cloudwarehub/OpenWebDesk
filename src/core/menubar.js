@@ -1,4 +1,4 @@
-define(['jquery', 'text!tpl/owdapp_item.html', 'owd/helper', 'owd/appManager'], function($, _owdapp_item, _helper, _appManager) {
+define(['jquery', 'text!tpl/owdapp_item.html', 'core/helper', 'core/appManager', 'core/desktop'], function($, _owdapp_item, _helper, _appManager, _desktop) {
 
 	function setupTimeView() {
 		var t = setInterval(time, 1000);
@@ -9,6 +9,19 @@ define(['jquery', 'text!tpl/owdapp_item.html', 'owd/helper', 'owd/appManager'], 
 			$("owd-menubar time").html(timeString).attr('title', dateString);
 		}
 	}
+	function open(){
+		_appManager.install($(this).attr('owdapp-url'), function(app){
+			$('owd-menubar search box').hide();
+			app.run();
+		});
+	}
+	
+	function open1(){
+		_appManager.install($(this).attr('owdapp-url'), function(app){
+			$('owd-menubar search box').hide();
+			app.run();
+		});
+	}
 	
 	function setupSearchView() {
 		$.ajax({
@@ -16,22 +29,18 @@ define(['jquery', 'text!tpl/owdapp_item.html', 'owd/helper', 'owd/appManager'], 
 			dataType: 'json',
 			success: function(data) {
 				$('owd-menubar owdapps').html('');
-				for (i in data.data) {
+				for (var i in data.data) {
 					var str = _helper.render(_owdapp_item, data.data[i]);
 					$("owd-menubar owdapps").append(str);
-					$('owd-menubar owdapp[owdapp-id="'+data.data[i].id+'"] a').click(function(){
-						_appManager.install($(this).attr('owdapp-url'), function(app){
-							$('owd-menubar search box').hide();
-							app.run();
-						});
-					})
+					$('owd-menubar owdapp[owdapp-id="'+data.data[i].id+'"] a').click(open);
 				}
 			}
 		});
 		
 		$("owd-menubar search icon").click(function() {
 			$("owd-menubar search box").toggle();
-		})
+		});
+		
 		$(document).click(function(event) { 
 			if(!$(event.target).closest('owd-menubar search').length ) {
 				$('owd-menubar search box').hide();
@@ -39,7 +48,7 @@ define(['jquery', 'text!tpl/owdapp_item.html', 'owd/helper', 'owd/appManager'], 
 		});
 		$("owd-menubar search input").on('input', function() {
 			var key = $(this).val();
-			if (key == "") 
+			if (key === "") 
 				return;
 			$.ajax({
 				url: 'http://api.cloudwarehub.com/owdapp/search',
@@ -47,26 +56,23 @@ define(['jquery', 'text!tpl/owdapp_item.html', 'owd/helper', 'owd/appManager'], 
 				dataType: 'json',
 				success: function(data) {
 					$('owd-menubar owdapps').html('');
-					for (i in data.data) {
+					for (var i in data.data) {
 						var str = _helper.render(_owdapp_item, data.data[i]);
 						$("owd-menubar owdapps").append(str);
-						$('owd-menubar owdapp[owdapp-id="'+data.data[i].id+'"] a').click(function(){
-							_appManager.install($(this).attr('owdapp-url'), function(app){
-								$('owd-menubar search box').hide();
-								app.run();
-							});
-						})
+						$('owd-menubar owdapp[owdapp-id="'+data.data[i].id+'"] a').click();
 					}
 				}
 			});
-		})
+		});
 	}
 	
 	function init() {
 		setupTimeView();
 		setupSearchView();
+		_desktop = require('core/desktop');
+		$('owd-menubar fullscreen').click(_desktop.toggleFullscreen);
 	}
 	return {
 		init: init
-	}
+	};
 });
