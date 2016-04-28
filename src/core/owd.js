@@ -4,7 +4,7 @@ define(['core/desktop', 'core/registry', 'core/appManager'], function(_desktop, 
 		_registry.init();
 	}
 		
-	//appManager.install('http://localhost:8081/about');
+	_appManager.install('http://apps.cloudwarehub.com/about');
 //	appManager.install('http://localhost:8081/baidu', function(){
 //		appManager.run('baidu');
 //	});

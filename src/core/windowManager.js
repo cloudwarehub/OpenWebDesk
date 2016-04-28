@@ -11,7 +11,7 @@ define(['core/window'], function(_window) {
 	}
 	
 	function createWindow(opts) {
-		var window = _window.create(opts, proc);
+ 		var window = _window.create(opts);
 		windows.push(window);
 		return window;
 	}
@@ -33,7 +33,7 @@ define(['core/window'], function(_window) {
 			return windows;
 		},
 		createWindow: createWindow,
-		showWindow: function(opts, proc) {
+		showWindow: function(opts) {
 			var window = getWindow(opts.wid);
 			if (opts.bare) {
 				window.setBare(opts.bare);

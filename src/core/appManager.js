@@ -21,6 +21,7 @@ define([
             var uuid = _helper.uuid();
             var app = _app.create({id: uuid, url: url, config: appconfig});
             //_registry.installApp(app);
+            apps.push(app);
             _ui.addIcon(app);
             (cb || function() {
             })(app);

@@ -1,4 +1,4 @@
-define(['core/process', 'core/helper', 'contextMenu'], function(_process, _helper, _contextMenu) {
+define(['core/process', 'core/helper', 'core/windowManager', 'contextMenu'], function(_process, _helper, _wm, _contextMenu) {
 	
 	var g_proc_id = 1;
     var processes = [];
@@ -45,14 +45,17 @@ define(['core/process', 'core/helper', 'contextMenu'], function(_process, _helpe
         
         /* remove windows, WARNING: don't splice windows in _wm.destroyWindow, 
          * because it will cause bellow for loop index a mess, must filter windows after destroy */
-        var windows = _wm.getWindows();
+
+        var windows = require('core/windowManager').getWindows();
         for (var i in windows) {
-            if (windows[i].proc.pid == proc.pid) {
+            var pid = windows[i].wid.split('_')[0];
+            if (pid == proc.pid) {
                 windows[i].destroy();
             }
         }
         windows.filter(function(win) {
-            return win.proc.pid != proc.pid;
+            var pid = win.wid.split('_')[0];
+            return pid != proc.pid;
         });
         
         /* remove proc */
@@ -73,8 +76,13 @@ define(['core/process', 'core/helper', 'contextMenu'], function(_process, _helpe
         
         return proc;
     }
+
+    function getAllProcesses() {
+        return processes;
+    }
     
     return {
-        create: create
+        create: create,
+        getAllProcesses: getAllProcesses
     };
 });

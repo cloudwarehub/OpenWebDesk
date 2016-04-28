@@ -75,6 +75,14 @@
 					files: ['src/index.html'],
 					tasks: ['copy:index']
 				},
+				loader: {
+                    files: ['src/owdAppLoader.js'],
+                    tasks: ['copy:owdjs']
+                },
+                worker: {
+                    files: ['src/worker.js'],
+                    tasks: ['copy:worker']
+                },
 				core: {
 					files: ['src/core/**'],
 					tasks: ['jshint:core', 'requirejs']

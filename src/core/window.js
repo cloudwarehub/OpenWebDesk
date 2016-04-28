@@ -5,8 +5,9 @@ define([
     'interact',
     'Player',
     'core/helper',
-    'core/windowManager'
-], function(html, ui, $, Interact, Player, _helper, _wm) {
+    'core/windowManager',
+    'core/event'
+], function(html, ui, $, Interact, Player, _helper, _wm, _event) {
 
 
     /**
@@ -23,15 +24,14 @@ define([
         return div.innerHTML;
     }
 
-    var Window = function(opts, proc) {
+    var Window = function(opts) {
         for (var i in opts) {
             this[i] = opts[i];
         }
         if (!opts.wid) {
             this.wid = Math.floor((Math.random() * 1000000) + 1); // TODO: check conflict
         }
-        this.proc = proc;
-        this.pid = proc.pid;
+        this.pid = 0;
         this.player = new Player({
             size: {
                 width: 1024,
@@ -47,7 +47,7 @@ define([
             return this.player;
         },
         getDom: function() {
-            return $('#window_' + this.proc.pid + '_' + this.wid);
+            return $('#window_' + this.wid);
         },
         set: function(key, value) {
             this[key] = value;
@@ -90,7 +90,11 @@ define([
             this.getDom().css('left', 0).css('top', 0).width($(document).width()).height($(document).height()).css('transform', '');
             // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.width = $(document).width();
             // $("#window_"+this.wid+' canvas').get(0).getContext('2d').canvas.height = $(document).height();
-
+            _event.dispatch({type: 'windowMove', data: {wid: this.wid, x: 0, y: 30}});
+            _event.dispatch({
+                type: 'windowResize',
+                data: {wid: this.wid, width: $(document).width(), height: $(document).height()}
+            });
         },
         hide: function() {
             this.getDom().hide();
@@ -106,9 +110,6 @@ define([
             this.setY(opts.y);
             this.setWidth(opts.width);
             this.setHeight(opts.height);
-            //$("#window_"+opts.wid).width(opts.width).height(ht); 
-            //$("#window_"+opts.wid+" canvas").remove();
-            //$("#window_"+opts.wid+' owd-window-content').append('<canvas width="'+opts.width+'px" height="'+opts.height+'px"></canvas>');
         },
         show: function() {
             if (this.getDom().length !== 0) {
@@ -117,15 +118,10 @@ define([
             }
             var self = this;
 
-            if (!this.bare && this.y < 15) {
-                self.proc.container.worker.postMessage(['windowMove', {wid: this.wid, x: this.x, y: 30}]);
-            }
             this.top_show = this.bare ? 'none' : 'block';
             $('owd-desktop').append(_helper.render(html, this));
             if (this.contentTpl) {
-                $.get(_helper.join(this.proc.app.getUrl(), this.contentTpl), function(tpl) {
-                    self.getDom().find('owd-window-content').html(_helper.render(stripScripts(tpl), self));
-                });
+                self.getDom().find('owd-window-content').html(_helper.render(stripScripts(this.contentTplStr), self));
             }
             if (this.type == 'cloudware') {
                 self.getDom().find('owd-window-content').html(this.player.canvas);
@@ -136,29 +132,37 @@ define([
             self.getDom().find('owd-window-button-close').click(function() {
                 self.hide();
             });
-            Interact('#window_' + this.proc.pid + '_' + this.wid + ' owd-window-title').draggable({
+            Interact('#window_' + this.wid + ' owd-window-title').draggable({
                 onmove: dragMoveListener,
                 onend: function(event) {
-                    self.proc.container.worker.postMessage(['windowMove', {
-                        wid: self.wid,
-                        x: self.x + event.dx,
-                        y: self.y + event.dy
-                    }]);
+                    _event.dispatch({
+                        type: 'windowMove',
+                        data: {wid: self.wid, x: self.x + event.dx, y: self.y + event.dy}
+                    });
                 }
             }).styleCursor(false);
-            Interact('#window_' + this.proc.pid + '_' + this.wid).resizable({
+            Interact('#window_' + this.wid).resizable({
                 edges: {
                     left: true,
                     right: true,
                     bottom: true,
                     top: true
-                }
+                },
+                onend: function(event) {
+                    _event.dispatch({
+                        type: 'windowResize',
+                        data: {wid: self.wid, width: self.width, height: self.height}
+                    });
+                },
             }).on('resizemove', function(event) {
                 var target = event.target, x = (parseFloat(target.getAttribute('data-resize-x')) || 0), y = (parseFloat(target.getAttribute('data-resize-y')) || 0);
 
                 // update the element's style
                 target.style.width = event.rect.width + 'px';
                 target.style.height = event.rect.height + 'px';
+
+                self.width = event.rect.width;
+                self.height = event.rect.height;
 
                 // translate when resizing from top or left edges
                 x += event.deltaRect.left;
@@ -180,22 +184,25 @@ define([
                 target.setAttribute('data-y', y);
             }
 
-            $('#window_' + this.proc.pid + '_' + this.wid + ' canvas').mousemove(function(e) {
-                self.proc.container.worker.postMessage(['mousemove', {wid: self.wid, x: e.offsetX, y: e.offsetY}]);
+            $('#window_' + this.wid + ' canvas').mousemove(function(e) {
+                _event.dispatch({type: 'mousemove', data: {wid: self.wid, x: e.offsetX, y: e.offsetY}});
             });
-            $('#window_' + this.proc.pid + '_' + this.wid + ' canvas').mousedown(function(e) {
-                self.proc.container.worker.postMessage(['mousedown', {wid: self.wid, code: e.which}]);
+            $('#window_' + this.wid + ' canvas').mousedown(function(e) {
+                _event.dispatch({type: 'mousedown', data: {wid: self.wid, code: e.which}});
                 return false;
             });
-            $('#window_' + this.proc.pid + '_' + this.wid + ' canvas').mouseup(function(e) {
-                self.proc.container.worker.postMessage(['mouseup', {wid: self.wid, code: e.which}]);
+            $('#window_' + this.wid + ' canvas').mouseup(function(e) {
+                _event.dispatch({type: 'mouseup', data: {wid: self.wid, code: e.which}});
                 return false;
             });
+            if (!this.bare && this.y < 15) {
+                _event.dispatch({type: 'windowMove', data: {wid: this.wid, x: this.x, y: 30}});
+            }
         }
     };
 
-    function create(opts, proc) {
-        var w = new Window(opts, proc);
+    function create(opts) {
+        var w = new Window(opts);
         return w;
     }
 
