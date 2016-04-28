@@ -2,16 +2,10 @@ define(['core/desktop', 'core/registry', 'core/appManager'], function(_desktop, 
 	function run() {
 		_desktop.init();
 		_registry.init();
+		_appManager.install('http://apps.cloudwarehub.com/about');
 	}
 		
-	_appManager.install('http://apps.cloudwarehub.com/about');
-//	appManager.install('http://localhost:8081/baidu', function(){
-//		appManager.run('baidu');
-//	});
 
-//	appManager.install('http://localhost:8081/gedit', function(app){
-//		app.run();
-//	});
 	return {
 		run: run
 	};

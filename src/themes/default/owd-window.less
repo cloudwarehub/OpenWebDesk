@@ -1,12 +1,16 @@
-
-owd-window,
 owd-window-top,
 owd-window-content,
 owd-window-title,
 owd-window-buttons {
     display : block;
 }
+
+owd-window[data-active="true"] {
+    .opacity(1);
+}
+
 owd-window {
+    .opacity(0.75);
     position : absolute;
     border-collapse: collapse;
     top : 0px;
@@ -15,10 +19,17 @@ owd-window {
     background: #fff;
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.6);
 }
+
+owd-window[data-bare="true"] {
+    .opacity(1);
+}
+
 owd-window-top{
     padding: 5px 10px;
     display: table-row;
     background: #efefef;
+    margin-top: -30px;
+    .border-radius(5px, 0, 0, 5px);
 }
 owd-window-icon{
     width: 20px;
@@ -69,8 +80,9 @@ owd-window-content{
 
 owd-window-resize{
     position: absolute;
+    display: block;
     z-index: -1;
-    top: calc(-8px);
+    top: 0;
     left: -8px;
     right: -8px;
     bottom: -8px;

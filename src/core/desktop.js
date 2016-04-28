@@ -4,8 +4,9 @@ define([
     'core/helper',
     'core/appManager',
     'core/event',
-    'core/keyMapper'
-], function($, _owdapp_item, _helper, _appManager, _event, keyMapper) {
+    'core/keyMapper',
+    'core/ui'
+], function($, _owdapp_item, _helper, _appManager, _event, keyMapper, _ui) {
     var isFullscreen = 0;
 
     function setupTimeView() {
@@ -20,13 +21,6 @@ define([
     }
 
     function open() {
-        _appManager.install($(this).attr('owdapp-url'), function(app) {
-            $('owd-menubar search box').hide();
-            app.run();
-        });
-    }
-
-    function open1() {
         _appManager.install($(this).attr('owdapp-url'), function(app) {
             $('owd-menubar search box').hide();
             app.run();
@@ -76,10 +70,15 @@ define([
         });
     }
 
+    function openMonitor() {
+        _appManager.installRun('http://localhost:8081/monitor');
+    }
+
     function initMenubar() {
         setupTimeView();
         setupSearchView();
         $('owd-menubar fullscreen').click(toggleFullscreen);
+        $('owd-menubar monitor').click(openMonitor);
     }
 
     function toggleFullscreen() {

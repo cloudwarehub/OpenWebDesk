@@ -1,23 +1,19 @@
 owd-menubar {
-	.user-select(none);
 	height: 36px;
 	width: 100%;
 	background: #101010;
 	display: table;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
 	overflow: visible;
 	z-index: 2;
-	margin: 0;
 	padding: 0 10px;
 	color: white;
-	
+    position: relative;
+    z-index: 1;
+
 	container {
 		display: table-row;
 	}
-	
+
 	search {
 		display: table-cell;
 		vertical-align: middle;
@@ -27,10 +23,10 @@ owd-menubar {
 		icon {
 			display: block;
 		}
-		
+
 		box {
 			.rounded;
-			.box-shadow(0 1px 2px #999);	
+			.box-shadow(0 1px 2px #999);
 			display: none;
 			background: white;
 			padding: 10px;
@@ -54,7 +50,7 @@ owd-menubar {
 				margin: 20px 0;
 				color: #333;
 				width: 280px;
-				
+
 				owdapp {
 					display: table-row;
 					border-bottom: 1px solid #e4e3e5;
@@ -72,7 +68,7 @@ owd-menubar {
 						display: table-cell;
 						vertical-align: middle;
 					}
-					
+
 					owdapp-charge, owdapp-ops {
 						width: 40px;
 						text-align: center;
@@ -81,35 +77,43 @@ owd-menubar {
 			}
 		}
 	}
-	
+
 	procs {
 		display: table-cell;
 		vertical-align: middle;
-		
+
 		proc {
 			cursor: pointer;
-			font-family: Karla, Sans-serif;		
+			font-family: Karla, Sans-serif;
 			margin-right: 20px;
 			display: inline-block;
 			height: 100%;
 			padding-top: 5px;
-		
+
 			img {
 				height: 16px;
 				width: 16px;
 				margin-right: 5px;
-				vertical-align: middle;		
+				vertical-align: middle;
 			}
 		}
 	}
-	
+
+	monitor {
+		display: table-cell;
+		vertical-align: middle;
+		width: 20px;
+		text-align: center;
+		cursor: pointer;
+	}
+
 	time {
 		width: 50px;
 		display: table-cell;
 		vertical-align: middle;
 		font-family: Monospace, Courier New;
 	}
-	
+
 	fullscreen {
 		display: table-cell;
 		vertical-align: middle;

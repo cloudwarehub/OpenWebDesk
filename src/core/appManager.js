@@ -20,11 +20,20 @@ define([
         }).done(function(appconfig) {
             var uuid = _helper.uuid();
             var app = _app.create({id: uuid, url: url, config: appconfig});
-            //_registry.installApp(app);
             apps.push(app);
             _ui.addIcon(app);
             (cb || function() {
             })(app);
+        });
+    }
+
+    /**
+     * install app and run
+     * @param url
+     */
+    function installRun(url) {
+        install(url, function(app) {
+            run(app);
         });
     }
 
@@ -37,6 +46,7 @@ define([
 
     return {
         install: install,
-        run: run
+        run: run,
+        installRun: installRun
     };
 });
