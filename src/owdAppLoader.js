@@ -43,7 +43,7 @@ function request(data, cb) {
     postMessage(send_data);
 }
 
-onmessage = function(msg) {console.log(msg);
+onmessage = function(msg) {
     var seq = msg.data.seq;
     (g_callbacks[seq] || function(){})(msg.data.data);
 }
@@ -113,10 +113,13 @@ self.Owdapp = {
         request({type: 'windowFrame', data: opts}, cb);
     },
     showLoading: function(cb) {
-        request({type: 'showLoading', data: opts}, cb);
+        request({type: 'showLoading', data: {}}, cb);
     },
     hideLoading: function(cb) {
-        request({type: 'hideLoading', data: opts}, cb);
+        request({type: 'hideLoading', data: {}}, cb);
+    },
+    exit: function() {
+        
     }
 }
 

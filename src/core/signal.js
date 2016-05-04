@@ -42,7 +42,7 @@ define(['core/windowManager'], function(_wm) {
                     break;
                 case 'windowFrame':
                     var win = _wm.getWindow(e.data.data.wid);
-                    if (win) {console.log(e.data.data.nal.byteLength);
+                    if (win) {
                         win.getPlayer().decode(new Uint8Array(e.data.data.nal));
                     }
                     proc.container.reply(req, {});

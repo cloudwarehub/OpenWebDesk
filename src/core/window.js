@@ -79,7 +79,6 @@ define([
             this.width = value;
             if (this.getDom().length) {
                 this.getDom().css('width', this.width);
-                this.getDom().find("canvas").css('width', this.width);
             }
         },
         setHeight: function(value) {

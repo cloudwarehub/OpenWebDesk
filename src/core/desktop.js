@@ -106,8 +106,6 @@ define([
 
     function initKeyEvent() {
         var km = new keyMapper(8);
-        console.log(km);
-        var downkeys = [];
         $(document).keyup(function(e) {
             var code = e.which;
             _event.dispatch({type: 'keyup', data: {wid: 0, code: km.mapKey(code)}});
