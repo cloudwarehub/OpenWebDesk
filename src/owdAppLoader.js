@@ -45,7 +45,11 @@ function request(data, cb) {
 
 onmessage = function(msg) {
     var seq = msg.data.seq;
-    (g_callbacks[seq] || function(){})(msg.data.data);
+    if (seq) {
+        (g_callbacks[seq] || function(){})(msg.data.data);
+    } else {
+        Owdapp.onmessage(msg);
+    }
 }
 
 request({
@@ -119,6 +123,9 @@ self.Owdapp = {
         request({type: 'hideLoading', data: {}}, cb);
     },
     exit: function() {
+        
+    },
+    onmessage: function() {
         
     }
 }

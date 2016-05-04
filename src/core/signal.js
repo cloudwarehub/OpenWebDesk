@@ -15,6 +15,9 @@ define(['core/windowManager'], function(_wm) {
                     break;
                 case 'showWindow':
                     _wm.showWindow(e.data.data);
+                    proc.container.reply(req, {
+                        type: 'showWindowNotify'
+                    });
                     break;
                 case 'createShowWindow':
                     var win = _wm.createWindow(e.data.data);
