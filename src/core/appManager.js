@@ -17,7 +17,7 @@ define([
     function install(url, cb) {
         for (var i in apps) {
             if (apps[i].url === url) {
-                (cb || function() {})(app);
+                (cb || function() {})(apps[i]);
                 return;
             }
         }
