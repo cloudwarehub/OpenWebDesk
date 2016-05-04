@@ -13,7 +13,7 @@ define(['core/window', 'core/ui'], function(_window, _ui) {
     function createWindow(opts) {
         if (!opts.wid) {
             opts.wid = g_wid++;
-        }
+        }console.log(opts);
         opts.zindex = _ui.getIncreaseZindex();
         var window = _window.create(opts);
         windows.push(window);

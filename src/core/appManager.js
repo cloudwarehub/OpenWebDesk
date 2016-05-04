@@ -15,6 +15,12 @@ define([
      * install app
      */
     function install(url, cb) {
+        for (var i in apps) {
+            if (apps[i].url === url) {
+                (cb || function() {})(app);
+                return;
+            }
+        }
         $.getJSON(_helper.join(url, "owdapp.json")).fail(function() {
             alert('no such app: ' + url);
         }).done(function(appconfig) {
@@ -22,8 +28,7 @@ define([
             var app = _app.create({id: uuid, url: url, config: appconfig});
             apps.push(app);
             _ui.addIcon(app);
-            (cb || function() {
-            })(app);
+            (cb || function() {})(app);
         });
     }
 

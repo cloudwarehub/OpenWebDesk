@@ -13,6 +13,9 @@ define(function() {
 		stop: function() {
 			this.worker.terminate();
 		},
+		reply: function(req, data) {
+            this.worker.postMessage({data: data, seq: req.seq});
+        }
 	};
 	
 	return {

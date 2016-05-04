@@ -1,4 +1,12 @@
-var seq = 1;
+var g_seq = 1;
+var g_callbacks = {};
+var g_wid = 1;
+
+self.loadScripts = function() {
+    for (var i in arguments) {
+        importScripts(self.Owdapp.appInfo.url + '/' + arguments[i]);
+    }
+}
 
 function ajax(opts) {
     var url = opts.url || '';
@@ -26,78 +34,90 @@ function ajax(opts) {
     return req;
 }
 
-var windows = [];
+function request(data, cb) {
+    var seq = g_seq++;
+    var send_data = {data: data, seq: seq};
+    if (cb) {
+        g_callbacks[seq] = cb;
+    }
+    postMessage(send_data);
+}
+
+onmessage = function(msg) {console.log(msg);
+    var seq = msg.data.seq;
+    (g_callbacks[seq] || function(){})(msg.data.data);
+}
+
+request({
+    type: 'getAppInfo'
+}, function(data) {
+    self.Owdapp.appInfo = data;
+    loadScripts('main.js');
+});
 
 self.Owdapp = {
     appInfo: {},
-    createWindow: function(opts) {
+    createWindow: function(opts, cb) {
+        opts.wid = opts.wid || g_wid++;
         opts.wid = self.Owdapp.appInfo.pid + '_' + opts.wid;
-        postMessage({type: 'createWindow', data: opts, seq: seq++});
+        request({type: 'createWindow', data: opts}, cb);
     },
-    createShowWindow: function(opts) {
+    createShowWindow: function(opts, cb) {
+        opts.wid = opts.wid || g_wid++;
         opts.wid = self.Owdapp.appInfo.pid + '_' + opts.wid;
         if (opts.contentTpl) {
             ajax({
                 url: self.Owdapp.appInfo.url + '/' + opts.contentTpl,
                 success: function(d) {
                     opts.contentTplStr = d;
-                    postMessage({type: 'createShowWindow', data: opts, seq: seq++});
+                    request({type: 'createShowWindow', data: opts}, cb);
                 }
             })
         } else {
-            postMessage({type: 'createShowWindow', data: opts, seq: seq++});
+            request({type: 'createShowWindow', data: opts}, cb);
         }
     },
     showWindow: function(opts, cb) {
+        opts.wid = opts.wid || g_wid++;
         opts.wid = self.Owdapp.appInfo.pid + '_' + opts.wid;
         if (opts.contentTpl) {
             ajax({
                 url: self.Owdapp.appInfo.url + '/' + opts.contentTpl,
                 success: function(d) {
                     opts.contentTplStr = d;
-                    postMessage({type: 'showWindow', data: opts, seq: seq++});
-                    (cb || function() {
-                    })();
+                    request({type: 'showWindow', data: opts}, cb);
                 }
             })
         } else {
-            postMessage({type: 'showWindow', data: opts, seq: seq++});
-            (cb || function() {
-            })();
+            request({type: 'showWindow', data: opts}, cb);
         }
     },
-    hideWindow: function(opts) {
+    hideWindow: function(opts, cb) {
+        opts.wid = opts.wid || g_wid++;
         opts.wid = self.Owdapp.appInfo.pid + '_' + opts.wid;
-        postMessage({type: 'hideWindow', data: opts, seq: seq++});
+        request({type: 'hideWindow', data: opts}, cb);
     },
-    destroyWindow: function(opts) {
+    destroyWindow: function(opts, cb) {
+        opts.wid = opts.wid || g_wid++;
         opts.wid = self.Owdapp.appInfo.pid + '_' + opts.wid;
-        postMessage({type: 'destroyWindow', data: opts, seq: seq++});
+        request({type: 'destroyWindow', data: opts}, cb);
     },
-    configureWindow: function(opts) {
+    configureWindow: function(opts, cb) {
+        opts.wid = opts.wid || g_wid++;
         opts.wid = self.Owdapp.appInfo.pid + '_' + opts.wid;
-        postMessage({type: 'configureWindow', data: opts, seq: seq++});
+        request({type: 'configureWindow', data: opts}, cb);
     },
-    showLoading: function() {
-        postMessage({type: 'showLoading', seq: seq++});
-    },
-    hideLoading: function() {
-        postMessage({type: 'hideLoading', seq: seq++});
-    },
-    windowFrame: function(opts) {
+    windowFrame: function(opts, cb) {
+        opts.wid = opts.wid || g_wid++;
         opts.wid = self.Owdapp.appInfo.pid + '_' + opts.wid;
-        postMessage({type: 'windowFrame', data: opts, seq: seq++});
+        request({type: 'windowFrame', data: opts}, cb);
+    },
+    showLoading: function(cb) {
+        request({type: 'showLoading', data: opts}, cb);
+    },
+    hideLoading: function(cb) {
+        request({type: 'hideLoading', data: opts}, cb);
     }
 }
 
-self.loadScripts = function() {
-    for (i in arguments) {
-        importScripts(self.Owdapp.appInfo.url + '/' + arguments[i]);
-    }
-}
 
-onmessage = function(msg) {
-    self.Owdapp.appInfo = msg.data;
-    onmessage = null;
-    loadScripts('main.js');
-}

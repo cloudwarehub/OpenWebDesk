@@ -10,9 +10,8 @@ define(['jquery', 'core/container', 'core/processManager', 'core/signal'], funct
 					app: app,
 					container: container
 				});
-				container.worker.postMessage({url: app.url, pid: proc.pid});
 				container.worker.onmessage = function(msg) {
-					_signal.handler(msg, proc);
+					_signal.handler(msg.data, proc);
 				};
 			}
 		});

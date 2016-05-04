@@ -176,60 +176,61 @@ define([
             if (this.bare) {
                 this.active = true;
             }
-
-            Interact('#window_' + this.wid + ' owd-window-title').draggable({
-                onmove: dragMoveListener,
-                onend: function(event) {
-                    _event.dispatch({
-                        type: 'windowMove',
-                        data: {wid: self.wid, x: self.x + event.dx, y: self.y + event.dy}
-                    });
-                }
-            }).styleCursor(false);
-            Interact('#window_' + this.wid).resizable({
-                edges: {
-                    left: true,
-                    right: true,
-                    bottom: true,
-                    top: false
-                },
-                onend: function(event) {
-                    _event.dispatch({
-                        type: 'windowResize',
-                        data: {wid: self.wid, width: self.width, height: self.height}
-                    });
-                },
-            }).on('resizemove', function(event) {
-                var target = event.target, x = (parseFloat(target.getAttribute('data-resize-x')) || 0), y = (parseFloat(target.getAttribute('data-resize-y')) || 0);
-
-                // update the element's style
-                target.style.width = event.rect.width + 'px';
-                target.style.height = event.rect.height + 'px';
-
-                self.width = event.rect.width;
-                self.height = event.rect.height;
-
-                // translate when resizing from top or left edges
-                x += event.deltaRect.left;
-                y += event.deltaRect.top;
-
-                target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-
-                target.setAttribute('data-resize-x', x);
-                target.setAttribute('data-resize-y', y);
-            });
-            function dragMoveListener(event) {
-                var target = event.target.parentNode.parentNode, x = (parseFloat(target.style.left) || 0) + event.dx, y = (parseFloat(target.style.top) || 0) + event.dy;
+            if (!self.bare) {
+                Interact('#window_' + this.wid + ' owd-window-title').draggable({
+                    onmove: function(event) {
+                        var target = event.target.parentNode.parentNode, x = (parseFloat(target.style.left) || 0) + event.dx, y = (parseFloat(target.style.top) || 0) + event.dy;
 
 
-                target.style.left = x + 'px';
-                //if (y >= 0)
-                    target.style.top = y + 'px';
+                        target.style.left = x + 'px';
+                        //if (y >= 0)
+                        target.style.top = y + 'px';
 
-                // update the posiion attributes
-                target.setAttribute('data-x', x);
-                target.setAttribute('data-y', y);
+                        // update the posiion attributes
+                        target.setAttribute('data-x', x);
+                        target.setAttribute('data-y', y);
+                    },
+                    onend: function(event) {
+                        _event.dispatch({
+                            type: 'windowMove',
+                            data: {wid: self.wid, x: self.x + event.dx, y: self.y + event.dy}
+                        });
+                    }
+                }).styleCursor(false);
+                Interact('#window_' + this.wid).resizable({
+                    edges: {
+                        left: true,
+                        right: true,
+                        bottom: true,
+                        top: false
+                    },
+                    onend: function(event) {
+                        _event.dispatch({
+                            type: 'windowResize',
+                            data: {wid: self.wid, width: self.width, height: self.height}
+                        });
+                    },
+                }).on('resizemove', function(event) {
+                    var target = event.target, x = (parseFloat(target.getAttribute('data-resize-x')) || 0), y = (parseFloat(target.getAttribute('data-resize-y')) || 0);
+
+                    // update the element's style
+                    target.style.width = event.rect.width + 'px';
+                    target.style.height = event.rect.height + 'px';
+
+                    self.width = event.rect.width;
+                    self.height = event.rect.height;
+
+                    // translate when resizing from top or left edges
+                    x += event.deltaRect.left;
+                    y += event.deltaRect.top;
+
+                    target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+
+                    target.setAttribute('data-resize-x', x);
+                    target.setAttribute('data-resize-y', y);
+                });
             }
+
 
             $('#window_' + this.wid + ' canvas').mousemove(function(e) {
                 if (!self.active)
