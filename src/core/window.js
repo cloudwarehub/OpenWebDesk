@@ -108,7 +108,7 @@ define([
                     height: this.height
                 };
                 this.getDom().css('left', 0).css('top', 0).width($(document).width()).height($(document).height()).css('transform', '');
-                _event.dispatch({type: 'windowMove', data: {wid: this.wid, x: 0, y: 0}});
+                _event.dispatch({type: 'windowMove', data: {wid: this.wid, x: 0, y: 0}}, this.wid.split('_')[0]);
                 _event.dispatch({
                     type: 'windowResize',
                     data: {wid: this.wid, width: $(document).width(), height: $(document).height() - 66}
