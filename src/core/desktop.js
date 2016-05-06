@@ -5,8 +5,9 @@ define([
     'core/appManager',
     'core/event',
     'core/keyMapper',
-    'core/ui'
-], function($, _owdapp_item, _helper, _appManager, _event, keyMapper, _ui) {
+    'core/ui',
+    'core/windowManager'
+], function($, _owdapp_item, _helper, _appManager, _event, keyMapper, _ui, _windowManager) {
     var isFullscreen = 0;
 
     function setupTimeView() {
@@ -108,12 +109,18 @@ define([
         var km = new keyMapper(8);
         $(document).keyup(function(e) {
             var code = e.which;
-            _event.dispatch({type: 'keyup', data: {wid: 0, code: km.mapKey(code)}});
+            _windowManager.getActiveWindows().forEach(function(window) {
+                _event.dispatch({type: 'keyup', data: {wid: 0, code: km.mapKey(code)}}, window.getWid().split('_')[0]);
+            });
+            //_event.dispatch({type: 'keyup', data: {wid: 0, code: km.mapKey(code)}});
             return false;
         });
         $(document).keydown(function(e) {
             var code = e.which;
-            _event.dispatch({type: 'keydown', data: {wid: 0, code: km.mapKey(code)}});
+            _windowManager.getActiveWindows().forEach(function(window) {
+                _event.dispatch({type: 'keydown', data: {wid: 0, code: km.mapKey(code)}}, window.getWid().split('_')[0]);
+            });
+            //_event.dispatch({type: 'keydown', data: {wid: 0, code: km.mapKey(code)}});
             return false;
         });
     }

@@ -29,6 +29,16 @@ define(['core/window', 'core/ui'], function(_window, _ui) {
         }
         windows.splice(i, 1);
     }
+    
+    function getActiveWindows() {
+        var rs = [];
+        for (var i in windows) {
+            if (windows[i].isActive()) {
+                rs.push(windows[i]);
+            }
+        }console.log(rs);
+        return rs;
+    }
 
 
     return {
@@ -59,6 +69,7 @@ define(['core/window', 'core/ui'], function(_window, _ui) {
         },
         hideLoading: function() {
             $("owd-loading-mask").hide();
-        }
+        },
+        getActiveWindows: getActiveWindows
     };
 });

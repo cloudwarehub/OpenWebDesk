@@ -98,7 +98,7 @@ define([
                 _event.dispatch({
                     type: 'windowResize',
                     data: {wid: this.wid, width: this.oldGeo.width, height: this.oldGeo.height}
-                });
+                }, this.wid.split('_')[0]);
                 this.isMaximized = false;
             } else {
                 this.oldGeo = {
@@ -112,7 +112,7 @@ define([
                 _event.dispatch({
                     type: 'windowResize',
                     data: {wid: this.wid, width: $(document).width(), height: $(document).height() - 66}
-                });
+                }, this.wid.split('_')[0]);
                 this.isMaximized = true;
             }
         },
@@ -138,14 +138,18 @@ define([
             this.getDom().attr('data-active', 'true');
             this.getDom().css('z-index', _ui.getIncreaseZindex());
             require('core/windowManager').getWindows().forEach(function(win) {
-                if ((win.getWid() !== self.getWid()) && !win.bare) {
+                if ((win.getWid() !== self.getWid())) {
                     win.getDom().attr('data-active', 'false');
+                    win.active = false;
                 }
             });
         },
         setZindex: function(zindex) {
             this.zindex = zindex;
             this.getDom().css('z-index', zindex);
+        },
+        isActive: function() {
+            return this.active;
         },
         show: function() {
             if (this.getDom().length !== 0) {
@@ -193,7 +197,7 @@ define([
                         _event.dispatch({
                             type: 'windowMove',
                             data: {wid: self.wid, x: self.x + event.dx, y: self.y + event.dy}
-                        });
+                        }, self.wid.split('_')[0]);
                     }
                 }).styleCursor(false);
                 Interact('#window_' + this.wid).resizable({
@@ -207,7 +211,7 @@ define([
                         _event.dispatch({
                             type: 'windowResize',
                             data: {wid: self.wid, width: self.width, height: self.height}
-                        });
+                        }, self.wid.split('_')[0]);
                     },
                 }).on('resizemove', function(event) {
                     var target = event.target, x = (parseFloat(target.getAttribute('data-resize-x')) || 0), y = (parseFloat(target.getAttribute('data-resize-y')) || 0);
@@ -234,17 +238,17 @@ define([
             $('#window_' + this.wid + ' canvas').mousemove(function(e) {
                 if (!self.active)
                     return;
-                _event.dispatch({type: 'mousemove', data: {wid: self.wid, x: e.offsetX, y: e.offsetY}});
+                _event.dispatch({type: 'mousemove', data: {wid: self.wid, x: e.offsetX, y: e.offsetY}}, self.wid.split('_')[0]);
             });
             $('#window_' + this.wid + ' canvas').mousedown(function(e) {
                 if (!self.active)
                     return;
-                _event.dispatch({type: 'mousedown', data: {wid: self.wid, code: e.which}});
+                _event.dispatch({type: 'mousedown', data: {wid: self.wid, code: e.which}}, self.wid.split('_')[0]);
             });
             $('#window_' + this.wid + ' canvas').mouseup(function(e) {
                 if (!self.active)
                     return;
-                _event.dispatch({type: 'mouseup', data: {wid: self.wid, code: e.which}});
+                _event.dispatch({type: 'mouseup', data: {wid: self.wid, code: e.which}}, self.wid.split('_')[0]);
             });
             if (!self.bare) {
                 this.getDom().mousedown(function() {

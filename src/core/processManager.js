@@ -29,7 +29,7 @@ define(['core/process', 'core/helper', 'core/windowManager', 'contextMenu'], fun
         }
     }
     
-    function findProcByPid(pid) {
+    function getProcById(pid) {
         for (var i in processes) {
             if (processes[i].pid == pid) {
                 return processes[i];
@@ -39,7 +39,7 @@ define(['core/process', 'core/helper', 'core/windowManager', 'contextMenu'], fun
     
     function kill(proc) {
         if (typeof(proc) == 'string') {
-            proc = findProcByPid(proc);
+            proc = getProcById(proc);
         }
         proc.container.stop();
         
@@ -83,6 +83,7 @@ define(['core/process', 'core/helper', 'core/windowManager', 'contextMenu'], fun
     
     return {
         create: create,
-        getAllProcesses: getAllProcesses
+        getAllProcesses: getAllProcesses,
+        getProcById: getProcById,
     };
 });

@@ -4,7 +4,8 @@ define(['core/desktop', 'core/registry', 'core/appManager'], function(_desktop, 
 		_registry.init();
 		_appManager.install('http://apps.cloudwarehub.com/about');
 		// _appManager.install('http://localhost:8081/about');
-		// _appManager.install('http://localhost:8081/gedit');
+		
+		_appManager.install('http://localhost:8081/gedit');
 	}
 		
 
